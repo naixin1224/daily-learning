@@ -2,7 +2,7 @@ class MyList {
     #arr = new Array();
     #capacity = 10;
     #size = 0;
-    #ectendRatio = 2;
+    #extendRatio = 2;
 
     constructor() {
         this.#arr = new Array(this.#capacity);
@@ -15,18 +15,15 @@ class MyList {
         return this.#capacity;
     }
     get(index) {
-        if (index < 0 || index >=this.#size) throw new Error("超过边界");
+        if (index < 0 || index >= this.#size) throw new Error("超过边界");
         return this.#arr[index];
     }
     set(index, element) {
-        if (index < 0 || index >=this.#size) throw new Error("超过边界");
+        if (index < 0 || index >= this.#size) throw new Error("超过边界");
         return this.#arr[index] = element;
     }
-    add(index, element) {
-        if (index < 0 || index >= this.#size) throw new Error("超过边界");
-        if (this.#size == this.#capacity) {
-            this.extendCapacity()
-        }
+    add(element) {
+
         this.#arr[this.#size] = element;
         this.#size++;
     }
@@ -51,21 +48,22 @@ class MyList {
         return element;
     }
     extendCapacity(){
-        this.#arr = this.#arr.concat(new Array(this.capacity()*(this.#capacity-1)))
+        this.#arr = this.#arr.concat(new Array(this.capacity()*(this.#extendRatio-1)));
         this.#capacity = this.#arr.length;
     }
 
-    toArray(){
+    toArray() {
         let size = this.size();
-        let arr = new Array(size);
+        const arr = new Array(size);
         for (let i = 0; i < size; i++) {
-            arr[i] = this.get[i];        
+            arr[i] = this.get(i);
         }
         return arr;
     }
 }
 
 let myList = new MyList();
+
 for (let i = 1; i <= 10; i++) {
     myList.add(i);
 }
