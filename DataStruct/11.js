@@ -1,76 +1,73 @@
-class MyList {
-    #arr = new Array();
-    #capacity = 10;
-    #size = 0;
-    #extendRatio = 2;
-
+class ListNode {
+    constructor(val) {
+        this.val = val;
+        this.next = null;
+    }
+}
+class LinkedListQueue {
     constructor() {
-        this.#arr = new Array(this.#capacity);
+        this.head = null;
+        this.rear = null;
+        this.size = 0;
     }
-
-    size() {
-        return this.#size;
+    /* 判断队列是否为空 */
+    isEmpty() {
+        return this.size === 0;
     }
-    capacity() {
-        return this.#capacity;
-    }
-    get(index) {
-        if (index < 0 || index >= this.#size) throw new Error("超过边界");
-        return this.#arr[index];
-    }
-    set(index, element) {
-        if (index < 0 || index >= this.#size) throw new Error("超过边界");
-        return this.#arr[index] = element;
-    }
-    add(element) {
-
-        this.#arr[this.#size] = element;
-        this.#size++;
-    }
-    insert(index, element) {
-        if (index < 0 || index > this.#size) throw new Error("超过边界");
-        if (this.#size == this.#capacity) {
-            this.extendCapacity()
+    /* 入队 */
+    push(node) {
+        let num = new ListNode(node);
+        if (!this.head) {
+            this.head = num;
+            this.rear = num;
+        } else {
+            this.rear.next = num;
+            this.rear = num;
         }
-        for (let i = this.#size - 1; i >= index; i--) {
-            this.#arr[i+1] = this.#arr[i];
-        }
-        this.#arr[index] = element;
-        this.#size++;
+        this.size++;
     }
-    remove(index){
-        if (index < 0 || index > this.#size) throw new Error("超过边界");
-        let element = this.#arr[index];
-        for(let i = index;i<this.#size-1;i++){
-            this.#arr[i] = this.#arr[i+1];
-        }
-        this.#size--;
-        return element;
+    /* 出队 */
+    pop() {
+        let num = this.peek();
+        this.head = this.head.next;
+        this.size--;
+        return num;
     }
-    extendCapacity(){
-        this.#arr = this.#arr.concat(new Array(this.capacity()*(this.#extendRatio-1)));
-        this.#capacity = this.#arr.length;
+    /* 访问队首元素 */
+    peek() {
+        if (this.size === 0) throw new Error('队列为空');
+        return this.head.val
     }
-
+    /* 将链表转化为 Array 并返回 */
     toArray() {
-        let size = this.size();
-        const arr = new Array(size);
-        for (let i = 0; i < size; i++) {
-            arr[i] = this.get(i);
+        let current = this.head;
+        let res = new Array(this.size);
+        for (let i = 0; i < this.size; i++) {
+            res[i] = current.val;
+            current = current.next
         }
-        return arr;
+        return res;
     }
 }
 
-let myList = new MyList();
 
-for (let i = 1; i <= 10; i++) {
-    myList.add(i);
-}
-console.log(myList.get(1));
-myList.set(5, 9000000);
-console.log(myList.toArray());
-myList.insert(9,40000000);
-console.log(myList.toArray());
-myList.remove(3);
-console.log(myList.toArray());
+
+
+const queue = new LinkedListQueue();
+// 测试队列是否为空
+console.log('Is the queue empty?', queue.isEmpty()); // 应该输出 true
+// 入队列操作
+queue.push(1);
+queue.push(2);
+queue.push(3);
+console.log(queue.toArray());
+// 测试队列的长度
+console.log('Stack size after pushing 1, 2, 3:', queue.size); // 应该输出 3
+// 查看队列顶元素
+console.log('Peek the top element:', queue.peek()); // 应该输出 1
+// 出队列操作
+console.log('Pop the top element:', queue.pop()); // 应该输出 1
+// 再次查看队列的长度
+console.log('Stack size after popping:', queue.size); // 应该输出 2
+// 将队列转换为数组
+console.log('Stack to array:', queue.toArray()); // 应该输出 [2, 3]
